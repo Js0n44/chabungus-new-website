@@ -15,10 +15,11 @@ const PORTFOLIO_GAMES: GameEntry[] = [
     { id: 125090186759686, type: "developed", ownership: 20 },
     { id: 111705974403823, type: "developed", ownership: 50 },
     { id: 13612031101, type: "developed", ownership: 50 },
-    { id: 81013050593070, type: "invested", ownership: 50 },
+    { id: 81013050593070, type: "developed", ownership: 50 },
+    { id: 118172129127511, type: "developed", ownership: 50 }
 ];
 
-const MIN_CCU_THRESHOLD = 50;
+const MIN_CCU_THRESHOLD = 10;
 
 export const revalidate = 60;
 
