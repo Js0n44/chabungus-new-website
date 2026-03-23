@@ -19,7 +19,7 @@ export default function Invest() {
                         Capital & Growth Partnerships
                     </h1>
                     <p className="text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto">
-                        If you have a cool game that's just not doinmg to well, Chabungus LLC may provide ad funding, marketing strategy, and algorithm optimization in exchange for equity or ownership percentage. "Releasing" a game is only just the beginning. We help with what's next.
+                        If you have a cool game that's just not doinmg to well, Chabungus LLC may provide ad funding, marketing strategy, and onboarding/gameplay optimization, and other stuff in exchange for equity or ownership percentage. "Releasing" a game is only just the beginning. We help with what's next.
                     </p>
                 </div>
 
