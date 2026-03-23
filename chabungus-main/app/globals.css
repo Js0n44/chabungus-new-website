@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", var(--font-inter);
+  --font-mono: "Outfit", var(--font-outfit);
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  
+  --color-card: #0a0a0a;
+  --color-card-foreground: #ffffff;
+  
+  --color-border: #262626;
+  --color-input: #262626;
+  
+  --color-primary: #ffffff;
+  --color-primary-foreground: #000000;
+  
+  --color-muted: #171717;
+  --color-muted-foreground: #a3a3a3;
+  
+  --color-accent: #171717;
+  --color-accent-foreground: #ffffff;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply antialiased min-h-screen selection:bg-white/20;
+  }
+}
