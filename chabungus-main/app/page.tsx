@@ -7,15 +7,15 @@ export default function Home() {
       <div className="relative flex w-full max-w-5xl flex-col items-center justify-center gap-12 text-center md:flex-row md:text-left">
         <div className="flex flex-1 flex-col items-center gap-6 md:items-start z-10">
           <div className="inline-flex items-center rounded-full border border-orange-500/20 bg-orange-500/10 px-3 py-1 text-sm font-medium text-orange-200 backdrop-blur-md">
-            ✨ Premium Game Creators
+            ✨ Sigma Game Creators
           </div>
 
           <h1 className="max-w-xl font-mono text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Roblox Game Creation & <span className="text-orange-400">Early Investing</span>
+            Roblox Game Creation & <span className="text-orange-400">Ad funding.</span>
           </h1>
 
           <p className="max-w-lg text-base text-zinc-300 leading-relaxed font-sans sm:text-lg">
-            Chabungus LLC is a Roblox game creation entity focused on developing our own high-performing games while also investing in and acquiring other games.
+            We create really cool Roblox games, listed on our portfolio for you to see, as well as investing services for small games. 
           </p>
 
           <div className="flex w-full flex-col gap-4 sm:flex-row sm:w-auto pt-4">
