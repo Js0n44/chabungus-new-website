@@ -45,14 +45,9 @@ export default function RealtimeGameCard({ initialData }: { initialData: GameWit
                 <h3 className="truncate text-xl font-bold text-white group-hover:text-orange-300 transition-colors" title={initialData.name}>
                     {initialData.name}
                 </h3>
-                <div className="flex items-center justify-between mt-1">
-                    <p className="text-sm text-zinc-400 truncate pr-2" title="Created by Chabungus LLC">
-                        Created by Chabungus LLC
-                    </p>
-                    <div className="inline-block rounded-full bg-orange-500/10 px-2 py-0.5 text-xs font-semibold text-orange-400 border border-orange-500/20 shrink-0">
-                        Ownership: {initialData.entryInfo.ownership}%
-                    </div>
-                </div>
+                <p className="text-sm text-zinc-400 truncate mt-1" title="Created by Chabungus LLC">
+                    Created by Chabungus LLC
+                </p>
                 <div className="mt-6 grid grid-cols-2 gap-4 mt-auto">
                     <div className="rounded-lg bg-black/40 border border-orange-500/10 p-3">
                         <p className="text-xs font-semibold uppercase tracking-wider text-orange-400">Active</p>
