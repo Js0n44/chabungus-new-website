@@ -12,11 +12,10 @@ export type GameEntry = {
 };
 
 const PORTFOLIO_GAMES: GameEntry[] = [
-    { id: 2753915549, type: "developed", ownership: 100 },
-    { id: 177052655, type: "invested", ownership: 20 },
-    { id: 920587237, type: "invested", ownership: 15 },
-    { id: 132455540, type: "developed", ownership: 50 },
-    { id: 66654135, type: "invested", ownership: 5 }
+    { id: 125090186759686, type: "developed", ownership: 20 },
+    { id: 111705974403823, type: "developed", ownership: 50 },
+    { id: 13612031101, type: "developed", ownership: 50 },
+    { id: 81013050593070, type: "invested", ownership: 50 },
 ];
 
 const MIN_CCU_THRESHOLD = 50;
