@@ -19,7 +19,7 @@ export default function Invest() {
                         Capital & Growth Partnerships
                     </h1>
                     <p className="text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto">
-                        If you have a Roblox game with strong retention but limited capital, Chabungus LLC may provide ad funding, marketing strategy, and algorithm optimization in exchange for equity or ownership percentage.
+                        If you have a cool game that's just not doinmg to well, Chabungus LLC may provide ad funding, marketing strategy, and algorithm optimization in exchange for equity or ownership percentage. "Releasing" a game is only just the beginning. We help with what's next.
                     </p>
                 </div>
 
@@ -34,10 +34,10 @@ export default function Invest() {
                                 <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Monetization restructuring
                             </li>
                             <li className="flex items-center gap-3">
-                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Retention optimization
+                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Onbooarding optimization
                             </li>
                             <li className="flex items-center gap-3">
-                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Algorithm positioning strategy
+                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Better thumbnails
                             </li>
                             <li className="flex items-center gap-3">
                                 <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Percentage-based investment agreements
@@ -53,10 +53,10 @@ export default function Invest() {
                                 <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> A link to your game for review.
                             </li>
                             <li className="flex items-center gap-3">
-                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Temporary access to live statistics.
+                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> Cccess to live statistics.
                             </li>
                             <li className="flex items-center gap-3">
-                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> The price or percentage you seek.
+                                <div className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" /> What you want.
                             </li>
                         </ul>
                     </div>
@@ -64,7 +64,7 @@ export default function Invest() {
 
                 <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-5 sm:p-6 text-center shadow-[0_0_20px_rgba(239,68,68,0.1)] backdrop-blur-sm">
                     <p className="text-sm sm:text-base text-red-200">
-                        <span className="font-bold text-red-500">Important:</span> If we proceed with an investment, our main condition is that we become the group holder of the game to mitigate risk and ensure both parties benefit.
+                        <span className="font-bold text-red-500">Important:</span>Usually if we proceed with an investment, our main condition is that we become the group holder of the game to mitigate risk and ensure both parties benefit.
                     </p>
                 </div>
 
