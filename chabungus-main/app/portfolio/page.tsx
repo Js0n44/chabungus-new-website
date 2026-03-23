@@ -61,7 +61,8 @@ export default async function Portfolio() {
                             thumbnail: thumb?.imageUrl || "https://placehold.co/512x512/1a1a1a/4ade80?text=Roblox+Game"
                         };
                     })
-                    .filter(game => game.playing >= MIN_CCU_THRESHOLD);
+                    .filter(game => game.playing >= MIN_CCU_THRESHOLD)
+                    .sort((a, b) => b.playing - a.playing);
             }
         }
     } catch (e) {
@@ -106,4 +107,3 @@ export default async function Portfolio() {
         </main>
     );
 }
-
