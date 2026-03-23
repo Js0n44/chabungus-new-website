@@ -48,7 +48,7 @@ export default function PortfolioGallery({ games, showOnlyAll = false }: Props) 
                 <div className="w-full">
                     {filtered.length === 0 ? (
                         <div className="flex h-48 flex-col items-center justify-center rounded-2xl border border-orange-500/20 bg-orange-500/5 border-dashed backdrop-blur-sm">
-                            <p className="text-orange-300 font-mono">No games in this category.</p>
+                            <p className="text-orange-300 font-mono">Coming soon!</p>
                         </div>
                     ) : (
                         <motion.div layout className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 text-left">
