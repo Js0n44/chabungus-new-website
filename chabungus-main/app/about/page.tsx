@@ -31,7 +31,7 @@ export default function About() {
                     <section className="space-y-4 rounded-2xl border border-orange-500/10 bg-orange-500/5 p-6 sm:p-8 backdrop-blur-sm transition-all hover:bg-orange-500/10 hover:border-orange-500/30 hover:shadow-[0_0_30px_rgba(249,115,22,0.1)]">
                         <h2 className="text-xl sm:text-2xl font-semibold text-white">Capital & Growth Investment</h2>
                         <p className="text-zinc-300 text-base sm:text-lg leading-relaxed">
-                            We invest in promising games by funding advertisements, optimizing monetization and onboarding systems, and improving algorithm positioning.
+                            We invest in promising games by funding advertisements, optimizing monetization and onboarding systems, and improving CCU.
                         </p>
                     </section>
                 </div>
