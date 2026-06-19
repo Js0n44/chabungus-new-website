@@ -19,7 +19,7 @@ const PORTFOLIO_GAMES: GameEntry[] = [
     { id: 118172129127511, type: "developed", ownership: 50 }
 ];
 
-const MIN_CCU_THRESHOLD = 10;
+const MIN_CCU_THRESHOLD = 4;
 
 export const revalidate = 60;
 
