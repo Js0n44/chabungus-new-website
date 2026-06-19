@@ -16,7 +16,16 @@ const PORTFOLIO_GAMES: GameEntry[] = [
     { id: 111705974403823, type: "developed", ownership: 50 },
     { id: 13612031101, type: "developed", ownership: 50 },
     { id: 81013050593070, type: "developed", ownership: 50 },
-    { id: 118172129127511, type: "developed", ownership: 50 }
+    { id: 118172129127511, type: "developed", ownership: 50 },
+
+    // Paint to Hide
+    { id: 105281019603659, type: "developed", ownership: 100 },
+
+    // Survive the Driver
+    { id: 95602997805580, type: "developed", ownership: 50 },
+
+    // +1 TNT Per Second
+    { id: 117081969138178, type: "developed", ownership: 100 }
 ];
 
 const MIN_CCU_THRESHOLD = 4;
@@ -32,13 +41,9 @@ export default async function Portfolio() {
         const placeIds = PORTFOLIO_GAMES.map(g => g.id);
         if (placeIds.length > 0) {
             const placeToUniverseData = await fetchUniverseIdsFromPlaceIds(placeIds);
-
             const resolvedGames = PORTFOLIO_GAMES.map(entry => {
                 const match = placeToUniverseData.find((p: any) => p.placeId === entry.id);
-                return {
-                    ...entry,
-                    universeId: match ? match.universeId : null
-                };
+                return { ...entry, universeId: match ? match.universeId : null };
             }).filter(g => g.universeId !== null);
 
             const universeIds = resolvedGames.map(g => g.universeId!);
@@ -69,29 +74,15 @@ export default async function Portfolio() {
         console.error("Failed to load portfolio data", e);
     }
 
-    const developedGames = games.filter(g => g.entryInfo.type === "developed");
-    const investedGames = games.filter(g => g.entryInfo.type === "invested");
-
     return (
         <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center px-4 sm:px-6 py-12 sm:py-16 relative z-10">
             <div className="w-full max-w-6xl space-y-12 sm:space-y-16 text-center">
-
                 <div className="flex flex-col items-center justify-center space-y-4">
                     <div className="flex items-center justify-center rounded-2xl sm:rounded-3xl bg-orange-500/10 p-3 sm:p-4 border border-orange-500/20 backdrop-blur-md mb-2">
-                        <Image
-                            src="/ChabungusC2.png"
-                            alt="Chabungus Logo"
-                            width={56}
-                            height={56}
-                            className="drop-shadow-[0_0_20px_rgba(249,115,22,0.4)] rounded-lg sm:rounded-xl"
-                        />
+                        <Image src="/ChabungusC2.png" alt="Chabungus Logo" width={56} height={56} className="drop-shadow-[0_0_20px_rgba(249,115,22,0.4)] rounded-lg sm:rounded-xl" />
                     </div>
-                    <h1 className="font-mono text-3xl font-bold tracking-tight text-white sm:text-5xl">
-                        Game Portfolio
-                    </h1>
-                    <p className="text-base sm:text-lg text-zinc-300 max-w-lg mx-auto">
-                        Performance transparency for acquisition inquiries.
-                    </p>
+                    <h1 className="font-mono text-3xl font-bold tracking-tight text-white sm:text-5xl">Game Portfolio</h1>
+                    <p className="text-base sm:text-lg text-zinc-300 max-w-lg mx-auto">Performance transparency for acquisition inquiries.</p>
                 </div>
 
                 {games.length === 0 ? (
@@ -102,7 +93,6 @@ export default async function Portfolio() {
                 ) : (
                     <PortfolioGallery games={games} showOnlyAll={SHOW_ONLY_ALL} />
                 )}
-
             </div>
         </main>
     );
