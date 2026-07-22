@@ -25,7 +25,10 @@ const PORTFOLIO_GAMES: GameEntry[] = [
     { id: 95602997805580, type: "developed", ownership: 50 },
 
     // +1 TNT Per Second
-    { id: 117081969138178, type: "developed", ownership: 100 }
+    { id: 117081969138178, type: "developed", ownership: 100 },
+
+    // Play Dead or OOF
+    { id: 91235001078797, type: "developed", ownership: 100 }
 ];
 
 const MIN_CCU_THRESHOLD = 4;
