@@ -17,7 +17,7 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Chabungus LLC - Roblox",
-  description: "We develop and invest in Roblox games, boosting retention and revenue.",
+  description: "Developing and shipping Roblox games.",
   icons: {
     icon: "/favicon.ico",
   },
