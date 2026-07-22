@@ -11,7 +11,7 @@ export default function Home() {
           </div>
 
           <h1 className="max-w-xl font-mono text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Roblox Game Creation & <span className="text-orange-400">Ad funding.</span>
+            Roblox Game Development & <span className="text-orange-400">Publishing</span>
           </h1>
 
           <p className="max-w-lg text-base text-zinc-300 leading-relaxed font-sans sm:text-lg">
