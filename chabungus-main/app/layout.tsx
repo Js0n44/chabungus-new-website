@@ -14,10 +14,17 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.chabungus.com"),
   title: "Chabungus LLC - Roblox",
   description: "Developing and shipping Roblox games.",
+  applicationName: "Chabungus LLC",
+  keywords: ["Chabungus", "Chabungus LLC", "Js0n44", "Roblox developer", "Roblox games"],
   icons: {
     icon: "/favicon.ico",
+  },
+  openGraph: {
+    siteName: "Chabungus LLC",
+    type: "website",
   },
 };
 
