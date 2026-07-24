@@ -64,7 +64,7 @@ export default function Invest() {
 
                 <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-5 sm:p-6 text-center shadow-[0_0_20px_rgba(239,68,68,0.1)] backdrop-blur-sm">
                     <p className="text-sm sm:text-base text-red-200">
-                        <span className="font-bold text-red-500">Important:</span>Usually if we proceed with an investment, our main condition is that we become the group holder of the game to mitigate risk and ensure both parties benefit.
+                        <span className="font-bold text-red-500">Important:</span>{" "}Usually if we proceed with an investment, our main condition is that we become the group holder of the game to mitigate risk and ensure both parties benefit.
                     </p>
                 </div>
 
