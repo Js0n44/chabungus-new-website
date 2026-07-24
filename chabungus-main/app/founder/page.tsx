@@ -51,7 +51,7 @@ async function getRobloxProfile(): Promise<RobloxProfile> {
 function VerifiedBadge() {
   return (
     <span
-      className="inline-flex h-6 w-6 shrink-0 items-center justify-center"
+      className="verified-shimmer inline-flex h-6 w-6 shrink-0 items-center justify-center"
       aria-label="Roblox verified"
       title="Roblox verified"
     >
@@ -96,7 +96,12 @@ export default async function FounderPage() {
                 and Michael of{" "}
                 <a href="https://cacheflow.gg" target="_blank" rel="noopener noreferrer" className="font-medium text-orange-400 underline decoration-orange-400/40 underline-offset-4 transition-colors hover:text-orange-300">
                   Cache Flow
-                </a>, peaked at more than <strong className="font-mono font-bold text-orange-400" aria-label="50,000 concurrent players"><span aria-hidden="true"><CountUp target={50000} duration={2600} /> concurrent players</span></strong> during the height of the Meccha Chameleon trend.
+                </a>, peaked at more than{" "}
+                <strong className="stadium-stat font-mono font-bold text-orange-400" aria-label="50,000 concurrent players, roughly an entire stadium online at once">
+                  <span className="stadium-stat-number" aria-hidden="true"><CountUp target={50000} duration={2600} /> concurrent players</span>
+                  <span className="stadium-stat-scale" aria-hidden="true">an entire stadium online at once</span>
+                </strong>{" "}
+                during the height of the Meccha Chameleon trend.
               </p>
             </div>
           </section>
@@ -115,7 +120,7 @@ export default async function FounderPage() {
                   alt="Js0n44 Roblox avatar"
                   width={420}
                   height={420}
-                  className="relative aspect-square h-auto w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="founder-avatar-entrance relative aspect-square h-auto w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                 />
               </div>
               <div className="flex items-center justify-between gap-4 px-1 pb-1 pt-5">
