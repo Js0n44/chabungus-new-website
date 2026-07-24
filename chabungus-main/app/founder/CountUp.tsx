@@ -5,9 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 type CountUpProps = {
   target: number;
   duration?: number;
+  delay?: number;
 };
 
-export default function CountUp({ target, duration = 1500 }: CountUpProps) {
+export default function CountUp({
+  target,
+  duration = 1500,
+  delay = 850,
+}: CountUpProps) {
   const [value, setValue] = useState(0);
   const formatter = useMemo(() => new Intl.NumberFormat("en-US"), []);
   const finalWidth = formatter.format(target).length;
@@ -35,10 +40,15 @@ export default function CountUp({ target, duration = 1500 }: CountUpProps) {
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
+    const delayTimer = window.setTimeout(() => {
+      animationFrame = requestAnimationFrame(animate);
+    }, delay);
 
-    return () => cancelAnimationFrame(animationFrame);
-  }, [duration, target]);
+    return () => {
+      window.clearTimeout(delayTimer);
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [delay, duration, target]);
 
   return (
     <span
