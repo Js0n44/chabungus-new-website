@@ -100,32 +100,53 @@ export default async function FounderPage() {
             </div>
           </section>
 
-          <a
-            href={profile.profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mx-auto block w-full max-w-sm rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-orange-500/40 hover:bg-orange-500/[0.06] hover:shadow-[0_20px_70px_rgba(249,115,22,0.16)]"
-          >
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-orange-500/15 to-zinc-950">
-              <div className="absolute inset-8 rounded-full bg-orange-500/20 blur-3xl" />
-              <img
-                src={profile.avatarUrl}
-                alt="Js0n44 Roblox avatar"
-                width={420}
-                height={420}
-                className="relative aspect-square h-auto w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-              />
-            </div>
-            <div className="flex items-center justify-between gap-4 px-1 pb-1 pt-5">
-              <div className="flex min-w-0 items-center gap-2">
-                <span className="truncate font-mono text-2xl font-bold text-white">Js0n44</span>
-                <VerifiedBadge />
+          <div className="mx-auto w-full max-w-sm space-y-4">
+            <a
+              href={profile.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block w-full rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-orange-500/40 hover:bg-orange-500/[0.06] hover:shadow-[0_20px_70px_rgba(249,115,22,0.16)]"
+            >
+              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-orange-500/15 to-zinc-950">
+                <div className="absolute inset-8 rounded-full bg-orange-500/20 blur-3xl" />
+                <img
+                  src={profile.avatarUrl}
+                  alt="Js0n44 Roblox avatar"
+                  width={420}
+                  height={420}
+                  className="relative aspect-square h-auto w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                />
               </div>
-              <span className="shrink-0 text-sm font-medium text-orange-400 transition-colors group-hover:text-orange-300">
-                View on Roblox →
-              </span>
-            </div>
-          </a>
+              <div className="flex items-center justify-between gap-4 px-1 pb-1 pt-5">
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className="truncate font-mono text-2xl font-bold text-white">Js0n44</span>
+                  <VerifiedBadge />
+                </div>
+                <span className="shrink-0 text-sm font-medium text-orange-400 transition-colors group-hover:text-orange-300">
+                  View on Roblox →
+                </span>
+              </div>
+            </a>
+
+            <details className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-colors open:border-orange-500/30 open:bg-orange-500/[0.05]">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-medium text-zinc-200 transition-colors hover:text-white [&::-webkit-details-marker]:hidden">
+                <span>&quot;Social&quot; Media</span>
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="h-5 w-5 shrink-0 text-orange-400 transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                >
+                  <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </summary>
+              <div className="border-t border-white/10 px-5 py-4">
+                <p className="text-sm leading-relaxed text-zinc-400">
+                  None. Social media is putrid filth.
+                </p>
+              </div>
+            </details>
+          </div>
         </div>
       </div>
     </main>
