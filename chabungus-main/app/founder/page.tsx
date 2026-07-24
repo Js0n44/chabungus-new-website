@@ -83,7 +83,7 @@ export default async function FounderPage() {
             </h1>
             <div className="mt-8 space-y-6 text-base leading-relaxed text-zinc-300 sm:text-lg">
               <p>
-                Initially called &quot;Js0n44 Studios&quot; before later rebranding, Chabungus was founded by Jason in April 2022 and incorporated as Chabungus LLC in February 2025. He has been creating on Roblox since 2020 and has helped bring <strong className="font-mono font-bold text-orange-400" aria-label="9 games"><span aria-hidden="true"><CountUp target={9} duration={1100} /> games</span></strong> to success on the Roblox homepage.
+                Initially called &quot;Js0n44 Studios&quot; before later rebranding, Chabungus was founded by Jason in April 2022 and incorporated as Chabungus LLC in February 2025. He has been creating on Roblox since 2020 and has helped bring <strong className="font-mono font-bold text-orange-400" aria-label="9 games"><span aria-hidden="true"><CountUp target={9} duration={1800} /> games</span></strong> to success on the Roblox homepage.
               </p>
               <p>
                 Many of Jason&apos;s early successes were developed entirely single-handedly, establishing him as one of Roblox&apos;s strongest independent solo developers.
@@ -96,7 +96,7 @@ export default async function FounderPage() {
                 and Michael of{" "}
                 <a href="https://cacheflow.gg" target="_blank" rel="noopener noreferrer" className="font-medium text-orange-400 underline decoration-orange-400/40 underline-offset-4 transition-colors hover:text-orange-300">
                   Cache Flow
-                </a>, peaked at more than <strong className="font-mono font-bold text-orange-400" aria-label="50,000 concurrent players"><span aria-hidden="true"><CountUp target={50000} duration={1800} /> concurrent players</span></strong> during the height of the Meccha Chameleon trend.
+                </a>, peaked at more than <strong className="font-mono font-bold text-orange-400" aria-label="50,000 concurrent players"><span aria-hidden="true"><CountUp target={50000} duration={2600} /> concurrent players</span></strong> during the height of the Meccha Chameleon trend.
               </p>
             </div>
           </section>
