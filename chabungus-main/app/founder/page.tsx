@@ -99,7 +99,7 @@ export default async function FounderPage() {
                 </a>, peaked at more than{" "}
                 <strong className="stadium-stat font-mono font-bold text-orange-400" aria-label="50,000 concurrent players, about an entire stadium online at once">
                   <span aria-hidden="true"><CountUp target={50000} duration={2600} /> concurrent players</span>
-                  <span className="stadium-tooltip" role="tooltip">About an entire stadium online at once</span>
+                  <span className="stadium-tooltip" role="tooltip">About an entire stadium online at once!</span>
                 </strong>{" "}
                 during the height of the Meccha Chameleon trend.
               </p>
