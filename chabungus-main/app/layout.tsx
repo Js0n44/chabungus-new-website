@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Lato } from "next/font/google";
 import "./globals.css";
 import Navigation from "./Navigation";
 import Sparkles from "./Sparkles";
 import PageWrapper from "./components/PageWrapper";
 
-const inter = Inter({
-  variable: "--font-inter",
+const lato = Lato({
+  variable: "--font-lato",
   subsets: ["latin"],
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
+  weight: ["700", "900"],
+  style: ["normal"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-black text-white relative`}>
+      <body className={`${lato.variable} font-sans antialiased bg-black text-white relative`}>
         <Sparkles />
         <Navigation />
         <PageWrapper>
