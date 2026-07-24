@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", var(--font-inter);
-  --font-mono: "Outfit", var(--font-outfit);
+  --font-sans: var(--font-lato), Arial, sans-serif;
+  --font-mono: var(--font-lato), Arial, sans-serif;
+
+  --font-weight-normal: 700;
+  --font-weight-medium: 700;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 900;
+
   --color-background: #000000;
   --color-foreground: #ffffff;
   
@@ -26,6 +32,16 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-weight: 700;
     @apply antialiased min-h-screen selection:bg-white/20;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 900;
   }
 }
