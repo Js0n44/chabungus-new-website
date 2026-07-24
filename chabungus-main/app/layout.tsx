@@ -8,7 +8,7 @@ import PageWrapper from "./components/PageWrapper";
 const lato = Lato({
   variable: "--font-lato",
   subsets: ["latin"],
-  weight: ["700", "900"],
+  weight: ["400", "700"],
   style: ["normal"],
   display: "swap",
 });
