@@ -82,7 +82,7 @@ export default async function FounderPage() {
             </h1>
             <div className="mt-8 space-y-6 text-base leading-relaxed text-zinc-300 sm:text-lg">
               <p>
-                Chabungus LLC was founded by Jason in 2022. He has been creating on Roblox since 2020 and has helped bring nine games to success on the Roblox homepage.
+                Initially called &quot;Js0n44 Studios&quot; before later rebranding, Chabungus was founded by Jason in April 2022 and incorporated as Chabungus LLC in February 2025. He has been creating on Roblox since 2020 and has helped bring nine games to success on the Roblox homepage.
               </p>
               <p>
                 Many of Jason&apos;s early successes were developed almost entirely single-handedly, establishing him as one of Roblox&apos;s strongest independent solo developers.
@@ -94,7 +94,7 @@ export default async function FounderPage() {
                 </a>{" "}
                 and Michael of{" "}
                 <a href="https://cacheflow.gg" target="_blank" rel="noopener noreferrer" className="font-medium text-orange-400 underline decoration-orange-400/40 underline-offset-4 transition-colors hover:text-orange-300">
-                  Cacheflow
+                  Cache Flow
                 </a>, peaked at more than 50,000 concurrent players during the height of the Matcha Chameleon trend.
               </p>
             </div>
