@@ -130,7 +130,7 @@ export default async function FounderPage() {
 
             <details className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-colors open:border-orange-500/30 open:bg-orange-500/[0.05]">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-medium text-zinc-200 transition-colors hover:text-white [&::-webkit-details-marker]:hidden">
-                <span>&quot;Social&quot; Media</span>
+                <span>Social Media</span>
                 <svg
                   viewBox="0 0 20 20"
                   fill="none"
@@ -142,7 +142,7 @@ export default async function FounderPage() {
               </summary>
               <div className="border-t border-white/10 px-5 py-4">
                 <p className="text-sm leading-relaxed text-zinc-400">
-                  None. Social media is putrid filth.
+                  None. &quot;Social&quot; media is putrid filth.
                 </p>
               </div>
             </details>
