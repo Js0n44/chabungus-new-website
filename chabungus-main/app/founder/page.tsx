@@ -85,7 +85,7 @@ export default async function FounderPage() {
                 Initially called &quot;Js0n44 Studios&quot; before later rebranding, Chabungus was founded by Jason in April 2022 and incorporated as Chabungus LLC in February 2025. He has been creating on Roblox since 2020 and has helped bring <strong className="font-mono font-bold text-orange-400">nine games</strong> to success on the Roblox homepage.
               </p>
               <p>
-                Many of Jason&apos;s early successes were developed almost entirely single-handedly, establishing him as one of Roblox&apos;s strongest independent solo developers.
+                Many of Jason&apos;s early successes were developed entirely single-handedly, establishing him as one of Roblox&apos;s strongest independent solo developers.
               </p>
               <p>
                 Chabungus LLC&apos;s most successful game, created by Jason of{" "}
