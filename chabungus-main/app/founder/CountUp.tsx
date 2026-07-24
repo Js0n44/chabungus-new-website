@@ -2,17 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+const PAGE_REVEAL_EVENT = "chabungus:page-reveal-complete";
+
 type CountUpProps = {
   target: number;
   duration?: number;
-  delay?: number;
 };
 
-export default function CountUp({
-  target,
-  duration = 1500,
-  delay = 850,
-}: CountUpProps) {
+export default function CountUp({ target, duration = 1500 }: CountUpProps) {
   const [value, setValue] = useState(0);
   const formatter = useMemo(() => new Intl.NumberFormat("en-US"), []);
   const finalWidth = formatter.format(target).length;
@@ -26,7 +23,9 @@ export default function CountUp({
     }
 
     let animationFrame = 0;
+    let fallbackTimer = 0;
     let startTime: number | null = null;
+    let hasStarted = false;
 
     const animate = (time: number) => {
       if (startTime === null) startTime = time;
@@ -40,15 +39,22 @@ export default function CountUp({
       }
     };
 
-    const delayTimer = window.setTimeout(() => {
+    const startAnimation = () => {
+      if (hasStarted) return;
+      hasStarted = true;
+      window.clearTimeout(fallbackTimer);
       animationFrame = requestAnimationFrame(animate);
-    }, delay);
+    };
+
+    window.addEventListener(PAGE_REVEAL_EVENT, startAnimation, { once: true });
+    fallbackTimer = window.setTimeout(startAnimation, 2500);
 
     return () => {
-      window.clearTimeout(delayTimer);
+      window.removeEventListener(PAGE_REVEAL_EVENT, startAnimation);
+      window.clearTimeout(fallbackTimer);
       cancelAnimationFrame(animationFrame);
     };
-  }, [delay, duration, target]);
+  }, [duration, target]);
 
   return (
     <span
