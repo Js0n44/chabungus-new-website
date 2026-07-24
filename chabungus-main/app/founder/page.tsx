@@ -2,8 +2,17 @@ import type { Metadata } from "next";
 import CountUp from "./CountUp";
 
 export const metadata: Metadata = {
-  title: "Founder | Chabungus LLC",
-  description: "Meet Jason, the founder of Chabungus LLC, and the Roblox developer known as Js0n44.",
+  title: "Js0n44 — Founder & Owner of Chabungus LLC",
+  description: "Meet Js0n44, the founder and owner of Chabungus LLC and the Roblox developer behind multiple homepage successes.",
+  alternates: {
+    canonical: "/founder",
+  },
+  openGraph: {
+    title: "Js0n44 — Founder & Owner of Chabungus LLC",
+    description: "Meet Js0n44, the founder and owner of Chabungus LLC and the Roblox developer behind multiple homepage successes.",
+    url: "/founder",
+    type: "profile",
+  },
 };
 
 type RobloxProfile = {
@@ -69,21 +78,45 @@ function VerifiedBadge() {
 
 export default async function FounderPage() {
   const profile = await getRobloxProfile();
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://www.chabungus.com/founder#person",
+    name: "Jason",
+    alternateName: "Js0n44",
+    url: "https://www.chabungus.com/founder",
+    image: profile.avatarUrl,
+    jobTitle: "Founder and Owner",
+    description: "Roblox developer known as Js0n44, founder and owner of Chabungus LLC.",
+    worksFor: {
+      "@id": "https://www.chabungus.com/#organization",
+      "@type": "Organization",
+      name: "Chabungus LLC",
+    },
+    sameAs: [profile.profileUrl],
+  };
 
   return (
     <main className="relative z-10 flex min-h-[calc(100vh-4rem)] items-center justify-center px-6 py-16 sm:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       <div className="w-full max-w-5xl">
         <div className="grid items-center gap-12 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16">
           <section>
             <div className="mb-5 inline-flex items-center rounded-full border border-orange-500/20 bg-orange-500/10 px-3 py-1 text-sm font-medium text-orange-200 backdrop-blur-md">
-              Founder of Chabungus LLC
+              Founder &amp; Owner of Chabungus LLC
             </div>
             <h1 className="font-mono text-4xl font-bold tracking-tight text-white sm:text-6xl">
               About the <span className="text-orange-400">Founder</span>
             </h1>
+            <p className="mt-3 text-base font-bold text-zinc-400 sm:text-lg">
+              Jason, known on Roblox as Js0n44 — Founder and Owner of Chabungus LLC
+            </p>
             <div className="mt-8 space-y-6 text-base leading-relaxed text-zinc-300 sm:text-lg">
               <p>
-                Initially called &quot;Js0n44 Studios&quot; before later rebranding, Chabungus was founded by Jason in April 2022 and incorporated as Chabungus LLC in February 2025. He has been creating on Roblox since 2020 and has helped bring <strong className="font-mono font-bold text-orange-400" aria-label="9 games"><span aria-hidden="true"><CountUp target={9} duration={1800} /> games</span></strong> to success on the Roblox homepage.
+                Initially called &quot;Js0n44 Studios&quot; before later rebranding, Chabungus was founded and is owned by Jason. It was established in April 2022 and incorporated as Chabungus LLC in February 2025. He has been creating on Roblox since 2020 and has helped bring <strong className="font-mono font-bold text-orange-400" aria-label="9 games"><span aria-hidden="true"><CountUp target={9} duration={1800} /> games</span></strong> to success on the Roblox homepage.
               </p>
               <p>
                 Many of Jason&apos;s early successes were developed entirely single-handedly, establishing him as one of Roblox&apos;s strongest independent solo developers.
