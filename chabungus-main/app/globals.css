@@ -4,10 +4,10 @@
   --font-sans: var(--font-lato), Arial, sans-serif;
   --font-mono: var(--font-lato), Arial, sans-serif;
 
-  --font-weight-normal: 700;
-  --font-weight-medium: 700;
+  --font-weight-normal: 400;
+  --font-weight-medium: 400;
   --font-weight-semibold: 700;
-  --font-weight-bold: 900;
+  --font-weight-bold: 700;
 
   --color-background: #000000;
   --color-foreground: #ffffff;
@@ -32,7 +32,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-weight: 700;
+    font-weight: 400;
     @apply antialiased min-h-screen selection:bg-white/20;
   }
 
@@ -42,6 +42,6 @@
   h4,
   h5,
   h6 {
-    font-weight: 900;
+    font-weight: 700;
   }
 }
