@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Founder | Chabungus LLC",
-  description: "Meet Jason, the founder of Chabungus LLC and the Roblox developer behind Js0n44.",
+  description: "Meet Jason, the founder of Chabungus LLC, and the Roblox developer known as Js0n44.",
 };
 
 type RobloxProfile = {
