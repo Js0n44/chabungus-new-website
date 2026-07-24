@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Chabungus LLC | Roblox Game Development & Publishing",
-  description: "Chabungus LLC develops, publishes, and invests in Roblox games. Founded and owned by Roblox developer Js0n44.",
+  description: "Chabungus LLC develops, publishes, and invests in Roblox games. Founded and led by Roblox developer and CEO Js0n44.",
   alternates: {
     canonical: "/",
   },
@@ -20,7 +20,7 @@ const organizationSchema = {
   url: "https://www.chabungus.com",
   logo: "https://www.chabungus.com/ChabungusC2.png",
   foundingDate: "2022-04",
-  description: "A Roblox game development, publishing, and investment company founded and owned by Js0n44.",
+  description: "A Roblox game development, publishing, and investment company founded and led by CEO Js0n44.",
   founder: {
     "@id": "https://www.chabungus.com/founder#person",
   },
@@ -44,7 +44,7 @@ export default function Home() {
           </h1>
 
           <p className="max-w-lg text-base text-zinc-300 leading-relaxed font-sans sm:text-lg">
-            We create really cool Roblox games, listed on our portfolio for you to see, as well as investing services for small games. Founded and owned by Roblox developer{" "}
+            We create really cool Roblox games, listed on our portfolio for you to see, as well as investing services for small games. Founded and led by Roblox developer and CEO{" "}
             <Link href="/founder" className="font-medium text-orange-400 underline decoration-orange-400/40 underline-offset-4 transition-colors hover:text-orange-300">
               Js0n44
             </Link>.
