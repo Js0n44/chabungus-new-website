@@ -49,11 +49,19 @@ async function getRobloxProfile(): Promise<RobloxProfile> {
 
 function VerifiedBadge() {
   return (
-    <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center" aria-label="Roblox verified" title="Roblox verified">
-      <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
-        <path fill="#1DA1F2" d="M12 1.8l2.2 1.5 2.7-.1 1.2 2.4 2.4 1.2-.1 2.7 1.5 2.2-1.5 2.2.1 2.7-2.4 1.2-1.2 2.4-2.7-.1L12 22.2l-2.2-1.5-2.7.1-1.2-2.4-2.4-1.2.1-2.7-1.5-2.2 1.5-2.2-.1-2.7 2.4-1.2 1.2-2.4 2.7.1L12 1.8z" />
-        <path d="M8.2 12.2l2.3 2.3 5.3-5.3" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+    <span
+      className="inline-flex h-6 w-6 shrink-0 items-center justify-center"
+      aria-label="Roblox verified"
+      title="Roblox verified"
+    >
+      <img
+        src="/roblox-verified.svg"
+        alt=""
+        width={24}
+        height={24}
+        className="h-6 w-6 object-contain"
+        aria-hidden="true"
+      />
     </span>
   );
 }
