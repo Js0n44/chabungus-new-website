@@ -95,7 +95,7 @@ export default async function FounderPage() {
                 and Michael of{" "}
                 <a href="https://cacheflow.gg" target="_blank" rel="noopener noreferrer" className="font-medium text-orange-400 underline decoration-orange-400/40 underline-offset-4 transition-colors hover:text-orange-300">
                   Cache Flow
-                </a>, peaked at more than 50,000 concurrent players during the height of the Matcha Chameleon trend.
+                </a>, peaked at more than 50,000 concurrent players during the height of the Meccha Chameleon trend.
               </p>
             </div>
           </section>
