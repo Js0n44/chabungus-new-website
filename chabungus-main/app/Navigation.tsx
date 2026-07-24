@@ -21,6 +21,7 @@ export default function Navigation() {
     { href: "/about", label: "About" },
     { href: "/portfolio", label: "Portfolio" },
     { href: "/invest", label: "Invest" },
+    { href: "/founder", label: "Founder" },
   ];
 
   return (
@@ -121,4 +122,3 @@ export default function Navigation() {
     </nav>
   );
 }
-
