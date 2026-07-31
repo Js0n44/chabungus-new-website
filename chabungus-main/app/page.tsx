@@ -44,7 +44,7 @@ export default function Home() {
           </h1>
 
           <p className="max-w-lg text-base text-zinc-300 leading-relaxed font-sans sm:text-lg">
-            We are a distribution company. Specifically a redistribution company, we redistribute wealth from the players to us.
+            We are a distribution company. Specifically a redistribution company. We specialize in the redistribution of wealth from the players back to us.
           </p>
 
           <div className="flex w-full flex-col gap-4 sm:flex-row sm:w-auto pt-4">
