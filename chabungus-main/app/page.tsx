@@ -44,7 +44,7 @@ export default function Home() {
           </h1>
 
           <p className="max-w-lg text-base text-zinc-300 leading-relaxed font-sans sm:text-lg">
-            We create really cool Roblox games, listed on our portfolio for you to see, as well as investing services for small games.
+            We are a distribution company. Specifically a redistribution company, we redistribute wealth from the players to us.
           </p>
 
           <div className="flex w-full flex-col gap-4 sm:flex-row sm:w-auto pt-4">
