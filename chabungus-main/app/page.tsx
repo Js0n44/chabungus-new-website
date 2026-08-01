@@ -109,25 +109,29 @@ export default function Home() {
         </div>
       </section>
 
-      <section aria-labelledby="what-chabungus-does" className="mx-auto grid w-full max-w-5xl gap-6 py-16 md:grid-cols-3">
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-md">
-          <h2 id="what-chabungus-does" className="font-mono text-2xl font-bold text-white">Roblox Games by Chabungus</h2>
-          <p className="mt-4 leading-relaxed text-zinc-400">
-            Chabungus develops original Roblox games designed for strong retention, replayability, social play, and sustainable monetization.
+      <section aria-labelledby="results-not-promises" className="mx-auto w-full max-w-5xl py-16 sm:py-20">
+        <div className="mb-8 space-y-3 text-center md:text-left">
+          <h2 id="results-not-promises" className="font-mono text-3xl font-bold text-white sm:text-4xl">
+            Results, not promises
+          </h2>
+          <p className="max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
+            One of our projects averaged <span className="font-semibold text-white">1,031,910 daily active users</span> during the selected period.
           </p>
         </div>
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-md">
-          <h2 className="font-mono text-2xl font-bold text-white">Publishing</h2>
-          <p className="mt-4 leading-relaxed text-zinc-400">
-            We work with Roblox developers on production, distribution, marketing, monetization, and long-term game growth.
-          </p>
+
+        <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-2 shadow-[0_0_40px_rgba(249,115,22,0.08)]">
+          <Image
+            src="/growth.png"
+            alt="Roblox Creator Analytics showing a Chabungus project averaging 1,031,910 daily active users"
+            width={1600}
+            height={900}
+            className="block h-auto w-full rounded-[calc(1.5rem-0.25rem)]"
+          />
         </div>
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-md">
-          <h2 className="font-mono text-2xl font-bold text-white">Founded by Js0n44</h2>
-          <p className="mt-4 leading-relaxed text-zinc-400">
-            Chabungus was founded in 2022 by Js0n44, an independent Roblox developer whose projects have reached the Roblox homepage and tens of thousands of concurrent players.
-          </p>
-        </div>
+
+        <p className="mt-4 text-center text-sm text-zinc-500 md:text-left">
+          Roblox Creator Analytics
+        </p>
       </section>
     </main>
   );
