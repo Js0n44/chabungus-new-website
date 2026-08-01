@@ -73,7 +73,7 @@ export default function Home() {
           </div>
 
           <h1 className="max-w-xl font-mono text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Chabungus LLC: Roblox Game Development &amp; <span className="text-orange-400">Publishing</span>
+            Roblox Game Development &amp; <span className="text-orange-400">Publishing</span>
           </h1>
 
           <p className="max-w-xl text-base leading-relaxed text-zinc-300 sm:text-lg">
