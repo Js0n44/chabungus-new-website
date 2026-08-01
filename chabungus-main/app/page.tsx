@@ -5,14 +5,14 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Chabungus LLC — Roblox Games by Js0n44",
   description:
-    "Chabungus LLC is an independent Roblox game development, publishing, and investment company founded by Roblox developer Js0n44.",
+    "Chabungus LLC has been developing and publishing Roblox games since 2022.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Chabungus LLC — Roblox Games by Js0n44",
     description:
-      "Explore Roblox games, publishing partnerships, and investments from Chabungus LLC, founded by Js0n44.",
+      "Chabungus LLC has been developing and publishing Roblox games since 2022.",
     url: "/",
     type: "website",
   },
@@ -29,7 +29,7 @@ const organizationSchema = {
   logo: "https://www.chabungus.com/ChabungusC2.png",
   foundingDate: "2022-04",
   description:
-    "An independent Roblox game development, publishing, and investment company founded by Roblox developer Js0n44.",
+    "A Roblox game development and publishing company founded by Roblox developer Js0n44.",
   founder: {
     "@type": "Person",
     "@id": "https://www.chabungus.com/founder#person",
@@ -77,11 +77,7 @@ export default function Home() {
           </h1>
 
           <p className="max-w-xl text-base leading-relaxed text-zinc-300 sm:text-lg">
-            Chabungus LLC is an independent Roblox game development, publishing, and investment company founded by Roblox developer Js0n44. We create original Roblox experiences and partner with developers to fund, publish, and grow their games.
-          </p>
-
-          <p className="max-w-xl text-sm leading-relaxed text-zinc-400 sm:text-base">
-            We are a distribution company. Specifically a redistribution company. We specialize in the redistribution of wealth from the players back to us.
+            Chabungus LLC has been developing and publishing Roblox games since 2022.
           </p>
 
           <div className="flex w-full flex-col gap-4 pt-4 sm:w-auto sm:flex-row">
@@ -121,9 +117,9 @@ export default function Home() {
           </p>
         </div>
         <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-md">
-          <h2 className="font-mono text-2xl font-bold text-white">Publishing &amp; Investment</h2>
+          <h2 className="font-mono text-2xl font-bold text-white">Publishing</h2>
           <p className="mt-4 leading-relaxed text-zinc-400">
-            We work with Roblox developers on funding, production, distribution, marketing, monetization, and long-term game growth.
+            We work with Roblox developers on production, distribution, marketing, monetization, and long-term game growth.
           </p>
         </div>
         <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-md">
