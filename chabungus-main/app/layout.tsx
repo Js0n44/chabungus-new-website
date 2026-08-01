@@ -15,16 +15,62 @@ const lato = Lato({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.chabungus.com"),
-  title: "Chabungus LLC - Roblox",
-  description: "Developing and shipping Roblox games.",
+  title: {
+    default: "Chabungus LLC — Roblox Games by Js0n44",
+    template: "%s | Chabungus LLC",
+  },
+  description:
+    "Chabungus LLC is an independent Roblox game development, publishing, and investment company founded by Roblox developer Js0n44.",
   applicationName: "Chabungus LLC",
-  keywords: ["Chabungus", "Chabungus LLC", "Js0n44", "Roblox developer", "Roblox games"],
+  authors: [{ name: "Chabungus LLC", url: "https://www.chabungus.com" }],
+  creator: "Chabungus LLC",
+  publisher: "Chabungus LLC",
+  keywords: [
+    "Chabungus",
+    "Chabungus LLC",
+    "Chabungus Games",
+    "Js0n44",
+    "Roblox developer",
+    "Roblox game development",
+    "Roblox game publisher",
+    "Roblox games",
+  ],
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
     siteName: "Chabungus LLC",
+    title: "Chabungus LLC — Roblox Games by Js0n44",
+    description:
+      "Roblox game development, publishing, and investment from Chabungus LLC, founded by Js0n44.",
+    url: "https://www.chabungus.com",
     type: "website",
+    images: [
+      {
+        url: "/image.png",
+        width: 500,
+        height: 500,
+        alt: "Chabungus LLC",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Chabungus LLC — Roblox Games by Js0n44",
+    description:
+      "Roblox game development, publishing, and investment from Chabungus LLC, founded by Js0n44.",
+    images: ["/image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -38,9 +84,7 @@ export default function RootLayout({
       <body className={`${lato.variable} font-sans antialiased bg-black text-white relative`}>
         <Sparkles />
         <Navigation />
-        <PageWrapper>
-          {children}
-        </PageWrapper>
+        <PageWrapper>{children}</PageWrapper>
       </body>
     </html>
   );
