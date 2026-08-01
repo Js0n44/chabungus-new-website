@@ -115,14 +115,14 @@ export default function Home() {
             Results, not promises
           </h2>
           <p className="max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
-            One of our projects averaged <span className="font-semibold text-white">1,031,910 daily active users</span> during the selected period.
+            <span className="font-semibold text-white">Nearly 5 million daily active users</span> at peak.
           </p>
         </div>
 
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-2 shadow-[0_0_40px_rgba(249,115,22,0.08)]">
           <Image
             src="/growth.png"
-            alt="Roblox Creator Analytics showing a Chabungus project averaging 1,031,910 daily active users"
+            alt="Roblox Creator Analytics showing a Chabungus project reaching nearly 5 million daily active users at peak"
             width={1600}
             height={900}
             className="block h-auto w-full rounded-[calc(1.5rem-0.25rem)]"
