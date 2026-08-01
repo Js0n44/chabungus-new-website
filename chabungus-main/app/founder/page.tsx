@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import CountUp from "./CountUp";
 
 export const metadata: Metadata = {
-  title: "Js0n44 — Founder & CEO of Chabungus LLC",
+  title: "Js0n44 — Founder & CEO",
   description: "Meet Js0n44, the founder and CEO of Chabungus LLC and the Roblox developer behind multiple homepage successes.",
   alternates: {
     canonical: "/founder",
@@ -82,8 +82,8 @@ export default async function FounderPage() {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": "https://www.chabungus.com/founder#person",
-    name: "Jason",
-    alternateName: "Js0n44",
+    name: "Js0n44",
+    alternateName: ["Jason", "Js0n44 Studios"],
     url: "https://www.chabungus.com/founder",
     image: profile.avatarUrl,
     jobTitle: "Founder and Chief Executive Officer",
@@ -93,7 +93,11 @@ export default async function FounderPage() {
       "@type": "Organization",
       name: "Chabungus LLC",
     },
-    sameAs: [profile.profileUrl],
+    sameAs: [
+      profile.profileUrl,
+      "https://github.com/Js0n44",
+      "https://www.youtube.com/@Js0n44",
+    ],
   };
 
   return (
@@ -109,7 +113,7 @@ export default async function FounderPage() {
               Founder of Chabungus LLC
             </div>
             <h1 className="font-mono text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              About the <span className="text-orange-400">Founder</span>
+              About <span className="text-orange-400">Js0n44</span>
             </h1>
             <div className="mt-8 space-y-6 text-base leading-relaxed text-zinc-300 sm:text-lg">
               <p>
