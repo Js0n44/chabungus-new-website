@@ -36,8 +36,9 @@ export const metadata: Metadata = {
     "Roblox games",
   ],
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    shortcut: "/icon.svg",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
   openGraph: {
     siteName: "Chabungus LLC",
