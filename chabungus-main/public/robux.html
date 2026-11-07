@@ -340,8 +340,10 @@ requestAnimationFrame(frame);
 
 /* ---------- sales ---------- */
 const fmt = (robux) => `R$${Math.round(robux).toLocaleString()}`;
-// Matches SalesHook: 70% creator share at the 0.0038 DevEx rate. Used only if a sale lacks its Robux price.
-const USD_PER_ROBUX = 0.7 * 0.0038;
+// The creator's share after Roblox's 30% cut, same as SalesHook's "earned".
+const CREATOR_SHARE = 0.7;
+// DevEx rate, only for sales that arrive without their Robux price.
+const USD_PER_ROBUX = 0.0038;
 const totalEl = document.getElementById("total");
 
 // Money made since this page was opened; the number rolls up to each new total.
@@ -355,7 +357,9 @@ function roll(now) {
 }
 
 function onSale(sale) {
-  const robux = Number(sale.robux) > 0 ? Number(sale.robux) : Math.round((Number(sale.usd) || 0) / USD_PER_ROBUX);
+  const robux = Number(sale.robux) > 0
+    ? Math.floor(Number(sale.robux) * CREATOR_SHARE)
+    : Math.round((Number(sale.usd) || 0) / USD_PER_ROBUX);
   if (robux <= 0) return;
   drop(robux);
   earned += robux;
