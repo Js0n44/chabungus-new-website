@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robux Rain</title>
+<!-- Same page as /cash, counted in Robux. Physics, sounds and the live feed come from /cash. -->
+<base href="/cash/">
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; overflow: hidden; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; }
+  #hud { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); z-index: 2; display: flex; align-items: center; gap: 10px; pointer-events: none; }
+  #total { font-size: 40px; font-weight: 800; color: #8a6410; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+  #dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; }
+  #dot.live { background: #2bb34a; }
+  #icon { height: 38px; width: auto; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><span id="dot"></span><img id="icon" src="/robux-icon.svg" alt="Robux"><span id="total">0</span></div>
+<script src="money.js"></script>
+<script>
+const { create, step } = MoneyPhysics;
+const params = new URLSearchParams(location.search);
+// ?speed=0.6 for slow motion; 1 is real time.
+const TIME_SCALE = Number(params.get("speed")) || 1;
+
+/* ---------- canvas & scale ---------- */
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+let W = 0, H = 0, DPR = 1, pxPerM = 1000, grow = 1;
+function resize() {
+  DPR = window.devicePixelRatio || 1;
+  W = innerWidth; H = innerHeight;
+  canvas.width = W * DPR; canvas.height = H * DPR;
+  // The window shows about 1.1 m of air top to bottom, so everything falls at real speed.
+  pxPerM = Math.max(550, Math.min(1400, H / 1.1));
+  // Draw money a bit larger on wide displays (1x up to 1280px wide, 1.5x at 2560px).
+  // Only the drawing grows; the physics stays real-size.
+  grow = Math.max(1, Math.min(1.5, 1 + (W - 1280) / 2560));
+}
+addEventListener("resize", resize);
+resize();
+
+/* ---------- money ---------- */
+// Physical sizes and masses. Coins are drawn a bit bigger than life so they read on screen.
+const COIN_DRAW = 1.6, COIN_THICK = 0.0016;
+const BILL = { w: 0.156, h: 0.0663, mass: 0.001, rotDamp: 7 };
+// One coin is one Robux, drawn as the Robux logo. Physics treats it as a disc.
+const COIN = { d: 0.04, mass: 0.004, rim: "rgb(150,118,52)" };
+const ICON_ASPECT = 26.1 / 24; // height / width of the logo
+const MAX_ON_SCREEN = 450;
+// Coins per second while a sale pours out; big sales rain for longer instead of all at once.
+const MIN_RATE = 60, MAX_RATE = 180;
+
+// The logo has see-through gaps, so shading uses solid-colour copies of its shape
+// instead of filling a rectangle over it.
+const iconImg = new Image();
+iconImg.onload = () => {
+  const w = 256, h = Math.round(w * ICON_ASPECT), pad = 14;
+  const copy = (cw, ch, draw) => {
+    const c = document.createElement("canvas");
+    c.width = cw; c.height = ch;
+    draw(c.getContext("2d"));
+    return c;
+  };
+  const tint = (color) => copy(w, h, (x) => {
+    x.drawImage(iconImg, 0, 0, w, h);
+    x.globalCompositeOperation = "source-in";
+    x.fillStyle = color;
+    x.fillRect(0, 0, w, h);
+  });
+  COIN.dark = tint("#000");
+  COIN.white = tint("#fff");
+  COIN.edge = tint(COIN.rim);
+  COIN.shadow = copy(w + pad * 2, h + pad * 2, (x) => {
+    x.filter = "blur(" + pad / 2 + "px)";
+    x.drawImage(COIN.dark, pad, pad);
+  });
+  COIN.shadowPad = [pad / w, pad / h];
+  COIN.sprite = copy(w, h, (x) => x.drawImage(iconImg, 0, 0, w, h));
+};
+iconImg.src = "/robux-icon.svg";
+
+const pieces = [];
+let pending = 0, releaseCarry = 0, jingleCount = 0, nextJingle = 0;
+const rnd = (a, b) => a + Math.random() * (b - a);
+
+function spawn(d) {
+  const wM = W / pxPerM;
+  const shape = d.bill ? BILL : { w: d.d, h: d.d, mass: d.mass, round: true };
+  const pos = [rnd(0.05, wM - 0.05), rnd(-0.25, -0.1), rnd(-0.3, 0.3)];
+  const body = d.bill
+    ? create(shape, pos, [rnd(-0.2, 0.2), rnd(0.2, 0.7), rnd(-0.1, 0.1)], [rnd(-8, 8), rnd(-5, 5), rnd(-3, 3)])
+    : create(shape, pos, [rnd(-0.3, 0.3), rnd(0, 0.8), rnd(-0.15, 0.15)], [rnd(-50, 50), rnd(-50, 50), rnd(-10, 10)]);
+  pieces.push({ d, body, nextRustle: performance.now() + rnd(100, 700) });
+}
+
+function drop(robux) {
+  pending += Math.max(1, Math.round(robux));
+  chaChing();
+}
+
+// Pours pending coins out at a steady rate; the coin sound follows the flow.
+function release(dt, now) {
+  if (pending <= 0) return;
+  const rate = Math.max(MIN_RATE, Math.min(MAX_RATE, pending / 1.5));
+  releaseCarry += rate * dt;
+  const n = Math.min(pending, Math.floor(releaseCarry));
+  releaseCarry -= n;
+  pending -= n;
+  for (let i = 0; i < n; i++) spawn(COIN);
+  jingleCount += n;
+  if (jingleCount > 0 && now >= nextJingle) {
+    coinJingle(Math.min(12, jingleCount));
+    jingleCount = 0;
+    nextJingle = now + 320;
+  }
+}
+
+/* ---------- drawing ---------- */
+// Light from the upper left, slightly in front. Viewer looks down -z.
+const LIGHT = (() => { const v = [-0.35, -0.6, 0.72], l = Math.hypot(...v); return v.map((x) => x / l); })();
+const HALF = (() => { const v = [LIGHT[0], LIGHT[1], LIGHT[2] + 1], l = Math.hypot(...v); return v.map((x) => x / l); })();
+const FOCAL = 1.6; // metres from the camera to the middle of the money
+
+// Maps the unit square (-0.5..0.5) onto the piece as it is seen on screen:
+// an orthographic view of its 3D frame, scaled by a little perspective.
+function basis(p, w, h, k, flip) {
+  const { e1, e2 } = p.body.frame;
+  const s = pxPerM * k * grow;
+  const f = flip ? -1 : 1;
+  return [e1[0] * w * s * f, e1[1] * w * s * f, e2[0] * h * s, e2[1] * h * s];
+}
+
+function drawPiece(p) {
+  const { d, body } = p;
+  const { n } = body.frame;
+  const k = FOCAL / (FOCAL + body.pos[2]);
+  const cx = body.pos[0] * pxPerM, cy = body.pos[1] * pxPerM;
+  const back = n[2] < 0; // looking at the other face: un-mirror it
+  const f = back ? n.map((x) => -x) : n; // normal of the face we see
+  const diffuse = Math.max(0, f[0] * LIGHT[0] + f[1] * LIGHT[1] + f[2] * LIGHT[2]);
+  if (!d.sprite) return; // logo still loading
+  const w = d.d * COIN_DRAW;
+  const h = w * ICON_ASPECT;
+  const [ax, ay, bx, by] = basis(p, w, h, k, back);
+  const at = (x, y) => ctx.setTransform(DPR * ax, DPR * ay, DPR * bx, DPR * by, DPR * x, DPR * y);
+
+  // Soft shadow on the white backdrop, further away for pieces nearer the camera.
+  const off = (10 + 40 * (1 - k)) * grow;
+  at(cx + off * 0.5, cy + off);
+  ctx.globalAlpha = 0.09;
+  const [padX, padY] = d.shadowPad;
+  ctx.drawImage(d.shadow, -0.5 - padX, -0.5 - padY, 1 + 2 * padX, 1 + 2 * padY);
+
+  // The coin's edge: stack thin slices along the normal, darkened when seen edge-on.
+  const t = COIN_THICK * COIN_DRAW * pxPerM * k * grow;
+  const ox = f[0] * t, oy = f[1] * t;
+  const edgeDark = 0.45 * (1 - Math.abs(f[2]));
+  for (let i = 0; i < 4; i++) {
+    const s = i / 3 - 1;
+    at(cx + ox * s, cy + oy * s);
+    ctx.globalAlpha = 1;
+    ctx.drawImage(d.edge, -0.5, -0.5, 1, 1);
+    if (edgeDark > 0.01) { ctx.globalAlpha = edgeDark; ctx.drawImage(d.dark, -0.5, -0.5, 1, 1); }
+  }
+
+  // Face, then diffuse shading and a specular glint, each through the logo's own shape.
+  at(cx, cy);
+  ctx.globalAlpha = 1;
+  ctx.drawImage(d.sprite, -0.5, -0.5, 1, 1);
+  const dark = (1 - (0.45 + 0.55 * diffuse)) * 0.45;
+  if (dark > 0.01) { ctx.globalAlpha = dark; ctx.drawImage(d.dark, -0.5, -0.5, 1, 1); }
+  const spec = Math.pow(Math.max(0, f[0] * HALF[0] + f[1] * HALF[1] + f[2] * HALF[2]), 30);
+  if (spec > 0.02) { ctx.globalAlpha = spec * 0.75; ctx.drawImage(d.white, -0.5, -0.5, 1, 1); }
+  ctx.globalAlpha = 1;
+}
+
+/* ---------- sound ---------- */
+let audio = null, master = null;
+const sfx = { coins: [], paper: [] };
+
+// Find the moments something actually happens in a recording, to cut short clips from.
+function onsets(buf, minGap) {
+  const data = buf.getChannelData(0), win = Math.floor(buf.sampleRate * 0.01);
+  const rms = [];
+  for (let i = 0; i + win < data.length; i += win) {
+    let s = 0;
+    for (let j = i; j < i + win; j++) s += data[j] * data[j];
+    rms.push(Math.sqrt(s / win));
+  }
+  const peak = Math.max(...rms), hi = peak * 0.2, lo = peak * 0.08;
+  const out = [];
+  let armed = true, last = -1e9;
+  rms.forEach((v, i) => {
+    const t = i * 0.01;
+    if (armed && v > hi && t - last > minGap) { out.push(Math.max(0, t - 0.015)); armed = false; last = t; }
+    if (v < lo) armed = true;
+  });
+  return out;
+}
+async function load(name) {
+  const res = await fetch("sfx/" + name);
+  const buf = await audio.decodeAudioData(await res.arrayBuffer());
+  return { buf, at: onsets(buf, 0.15) };
+}
+function initAudio() {
+  if (audio) { if (audio.state === "suspended") audio.resume(); return; }
+  audio = new (window.AudioContext || window.webkitAudioContext)();
+  const comp = audio.createDynamicsCompressor();
+  comp.threshold.value = -14; comp.ratio.value = 4;
+  master = audio.createGain();
+  master.connect(comp).connect(audio.destination);
+  Promise.all(["coins-bag.ogg", "coins-shake.ogg"].map(load)).then((c) => (sfx.coins = c)).catch(() => {});
+  load("paper.ogg").then((p) => (sfx.paper = [p])).catch(() => {});
+  load("cha-ching.mp3").then((c) => {
+    const data = c.buf.getChannelData(0);
+    const first = data.findIndex((x) => Math.abs(x) > 0.02);
+    c.head = Math.max(0, first / c.buf.sampleRate - 0.01);
+    sfx.chaChing = c;
+  }).catch(() => {});
+}
+initAudio();
+// Browsers keep a page silent until the first click or key press on it.
+addEventListener("pointerdown", initAudio);
+addEventListener("keydown", initAudio);
+
+function playClip(set, len, gain, x, rate, highpass) {
+  if (!audio || audio.state !== "running" || !set.length) return false;
+  const rec = set[Math.floor(Math.random() * set.length)];
+  if (!rec.at.length) return false;
+  const start = rec.at[Math.floor(Math.random() * rec.at.length)];
+  const t = audio.currentTime + 0.01;
+  const src = audio.createBufferSource();
+  src.buffer = rec.buf;
+  src.playbackRate.value = rate;
+  const g = audio.createGain();
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(gain, t + 0.006);
+  g.gain.setValueAtTime(gain, t + Math.max(0.01, len - 0.12));
+  g.gain.linearRampToValueAtTime(0, t + len);
+  const pan = audio.createStereoPanner();
+  pan.pan.value = Math.max(-1, Math.min(1, (x / W) * 2 - 1)) * 0.6;
+  let node = src;
+  if (highpass) {
+    const f = audio.createBiquadFilter();
+    f.type = "highpass"; f.frequency.value = highpass;
+    node = node.connect(f);
+  }
+  node.connect(g).connect(pan).connect(master);
+  src.start(t, start, len / rate + 0.05);
+  return true;
+}
+function chaChing() {
+  const rec = sfx.chaChing;
+  if (!audio || audio.state !== "running" || !rec) return;
+  const src = audio.createBufferSource();
+  src.buffer = rec.buf;
+  const g = audio.createGain();
+  g.gain.value = 0.9;
+  src.connect(g).connect(master);
+  // Skip the silence at the head of the recording so it lands with the sale.
+  src.start(audio.currentTime + 0.01, rec.head);
+}
+function coinJingle(count) {
+  const len = Math.min(1.8, 0.35 + count * 0.12);
+  playClip(sfx.coins, len, Math.min(1, 0.45 + count * 0.06), W * rnd(0.3, 0.7), rnd(0.96, 1.06));
+}
+let rustles = [];
+function paperRustle(x, intensity, long) {
+  const now = performance.now();
+  rustles = rustles.filter((t) => now - t < 300);
+  if (rustles.length >= 4) return;
+  if (playClip(sfx.paper, long ? 0.45 : rnd(0.12, 0.25), 0.35 * intensity, x, rnd(1.0, 1.25), 700)) rustles.push(now);
+}
+
+/* ---------- loop ---------- */
+let last = performance.now();
+const SUB = 1 / 600;
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000) * TIME_SCALE;
+  last = now;
+  release(dt, now);
+
+  const steps = Math.ceil(dt / SUB);
+  for (const p of pieces) for (let i = 0; i < steps; i++) step(p.body, dt / steps);
+
+  for (let i = pieces.length - 1; i >= 0; i--) {
+    const p = pieces[i], b = p.body;
+    const y = b.pos[1] * pxPerM, x = b.pos[0] * pxPerM;
+    if (y > H + 200 || x < -400 || x > W + 400 || i < pieces.length - MAX_ON_SCREEN) { pieces.splice(i, 1); continue; }
+    // Paper only makes noise when it snaps over quickly.
+    if (p.d.bill && now > p.nextRustle && y > 0 && y < H) {
+      const spin = Math.hypot(...b.omega);
+      if (spin > 6) paperRustle(x, Math.min(1, spin / 25), false);
+      p.nextRustle = now + rnd(400, 1200);
+    }
+  }
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Far pieces first.
+  pieces.sort((a, b) => b.body.pos[2] - a.body.pos[2]);
+  for (const p of pieces) drawPiece(p);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---------- sales ---------- */
+const fmt = (robux) => Math.round(robux).toLocaleString();
+// The creator's share after Roblox's 30% cut, same as SalesHook's "earned".
+const CREATOR_SHARE = 0.7;
+// DevEx rate, only for sales that arrive without their Robux price.
+const USD_PER_ROBUX = 0.0038;
+const totalEl = document.getElementById("total");
+
+// Money made since this page was opened; the number rolls up to each new total.
+let earned = 0, shown = 0, rollFrom = 0, rollStart = 0;
+const ROLL_MS = 1200;
+function roll(now) {
+  const t = Math.min(1, (now - rollStart) / ROLL_MS);
+  shown = rollFrom + (earned - rollFrom) * (1 - Math.pow(1 - t, 3));
+  totalEl.textContent = fmt(shown);
+  if (t < 1) requestAnimationFrame(roll);
+}
+
+function onSale(sale) {
+  const robux = Number(sale.robux) > 0
+    ? Math.floor(Number(sale.robux) * CREATOR_SHARE)
+    : Math.round((Number(sale.usd) || 0) / USD_PER_ROBUX);
+  if (robux <= 0) return;
+  drop(robux);
+  earned += robux;
+  rollFrom = shown;
+  rollStart = performance.now();
+  requestAnimationFrame(roll);
+}
+
+const dot = document.getElementById("dot");
+// On chabungus.com the page is proxied, but the live socket goes straight to the Worker.
+const WORKER = "https://sale-rain.sale-rain.workers.dev";
+const direct = location.hostname.endsWith(".workers.dev") || location.hostname === "localhost";
+const wsUrl = (direct ? location.origin : WORKER).replace(/^http/, "ws") + "/cash/ws";
+let retry = 1000;
+function connect() {
+  const ws = new WebSocket(wsUrl);
+  let ping;
+  ws.onopen = () => {
+    dot.classList.add("live");
+    retry = 1000;
+    ping = setInterval(() => ws.send("ping"), 30000);
+  };
+  ws.onmessage = (e) => {
+    if (e.data === "pong") return;
+    const msg = JSON.parse(e.data);
+    if (msg.type === "sale") onSale(msg);
+  };
+  ws.onclose = () => {
+    dot.classList.remove("live");
+    clearInterval(ping);
+    setTimeout(connect, retry);
+    retry = Math.min(30000, retry * 2);
+  };
+}
+connect();
+
+// Hidden shortcut: T drops a fake sale locally (nothing is sent to the server).
+addEventListener("keydown", (e) => {
+  if (e.key !== "t" && e.key !== "T") return;
+  const robux = [25, 49, 99, 199, 499, 1000, 4500][Math.floor(Math.random() * 7)];
+  onSale({ usd: robux * 0.7 * 0.0038, robux });
+});
+</script>
+</body>
+</html>

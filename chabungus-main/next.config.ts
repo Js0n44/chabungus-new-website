@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
         return [
             { source: "/cash", destination: `${SALE_RAIN}/cash/` },
             { source: "/cash/:path*", destination: `${SALE_RAIN}/cash/:path*` },
+            // Same page counted in Robux; it loads its physics, sounds and feed from /cash.
+            { source: "/robux", destination: "/robux.html" },
         ];
     },
     images: {
