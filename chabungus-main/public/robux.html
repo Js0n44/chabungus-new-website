@@ -13,11 +13,12 @@
   #total { font-size: 40px; font-weight: 800; color: #8a6410; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
   #dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; }
   #dot.live { background: #2bb34a; }
+  #icon { height: 38px; width: auto; }
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="hud"><span id="dot"></span><span id="total">R$0</span></div>
+<div id="hud"><span id="dot"></span><img id="icon" src="/robux-icon.svg" alt="Robux"><span id="total">0</span></div>
 <script src="money.js"></script>
 <script>
 const { create, step } = MoneyPhysics;
@@ -46,47 +47,41 @@ resize();
 // Physical sizes and masses. Coins are drawn a bit bigger than life so they read on screen.
 const COIN_DRAW = 1.6, COIN_THICK = 0.0016;
 const BILL = { w: 0.156, h: 0.0663, mass: 0.001, rotDamp: 7 };
-// One hexagonal coin is one Robux. Physics treats it as a disc.
-const COIN = { d: 0.03, mass: 0.004, face: ["#f9dc7c", "#d9a21f", "#946409"], rim: [168, 118, 20] };
+// One coin is one Robux, drawn as the Robux logo. Physics treats it as a disc.
+const COIN = { d: 0.04, mass: 0.004, rim: "rgb(150,118,52)" };
+const ICON_ASPECT = 26.1 / 24; // height / width of the logo
 const MAX_ON_SCREEN = 450;
 // Coins per second while a sale pours out; big sales rain for longer instead of all at once.
 const MIN_RATE = 60, MAX_RATE = 180;
 
-// Unit hexagon (pointy top) with slightly rounded corners, centred on 0,0.
-function hexPath(x, r, round = 0.12) {
-  const pts = [];
-  for (let i = 0; i < 6; i++) {
-    const a = Math.PI / 3 * i - Math.PI / 2;
-    pts.push([Math.cos(a) * r, Math.sin(a) * r]);
-  }
-  x.beginPath();
-  for (let i = 0; i < 6; i++) {
-    const [px, py] = pts[i], [ax, ay] = pts[(i + 5) % 6], [bx, by] = pts[(i + 1) % 6];
-    const sx = px + (ax - px) * round, sy = py + (ay - py) * round;
-    if (i === 0) x.moveTo(sx, sy); else x.lineTo(sx, sy);
-    x.quadraticCurveTo(px, py, px + (bx - px) * round, py + (by - py) * round);
-  }
-  x.closePath();
-}
-
-function coinSprite([light, mid, dark]) {
-  const S = 256, c = document.createElement("canvas");
-  c.width = c.height = S;
-  const x = c.getContext("2d");
-  x.translate(S / 2, S / 2);
-  const g = x.createLinearGradient(-S / 2, -S / 2, S / 2, S / 2);
-  g.addColorStop(0, light); g.addColorStop(0.55, mid); g.addColorStop(1, dark);
-  hexPath(x, S * 0.5); x.fillStyle = g; x.fill();
-  // Raised ring, then the sunken hexagon in the middle like the Robux mark.
-  hexPath(x, S * 0.4); x.fillStyle = dark; x.fill();
-  hexPath(x, S * 0.36); x.fillStyle = g; x.fill();
-  x.save(); x.rotate(Math.PI / 6);
-  hexPath(x, S * 0.2, 0.18); x.fillStyle = dark; x.fill();
-  x.restore();
-  hexPath(x, S * 0.5); x.lineWidth = 6; x.strokeStyle = "rgba(255,255,255,0.35)"; x.stroke();
-  return c;
-}
-COIN.sprite = coinSprite(COIN.face);
+// The logo has see-through gaps, so shading uses solid-colour copies of its shape
+// instead of filling a rectangle over it.
+const iconImg = new Image();
+iconImg.onload = () => {
+  const w = 256, h = Math.round(w * ICON_ASPECT), pad = 14;
+  const copy = (cw, ch, draw) => {
+    const c = document.createElement("canvas");
+    c.width = cw; c.height = ch;
+    draw(c.getContext("2d"));
+    return c;
+  };
+  const tint = (color) => copy(w, h, (x) => {
+    x.drawImage(iconImg, 0, 0, w, h);
+    x.globalCompositeOperation = "source-in";
+    x.fillStyle = color;
+    x.fillRect(0, 0, w, h);
+  });
+  COIN.dark = tint("#000");
+  COIN.white = tint("#fff");
+  COIN.edge = tint(COIN.rim);
+  COIN.shadow = copy(w + pad * 2, h + pad * 2, (x) => {
+    x.filter = "blur(" + pad / 2 + "px)";
+    x.drawImage(COIN.dark, pad, pad);
+  });
+  COIN.shadowPad = [pad / w, pad / h];
+  COIN.sprite = copy(w, h, (x) => x.drawImage(iconImg, 0, 0, w, h));
+};
+iconImg.src = "/robux-icon.svg";
 
 const pieces = [];
 let pending = 0, releaseCarry = 0, jingleCount = 0, nextJingle = 0;
@@ -130,18 +125,6 @@ const LIGHT = (() => { const v = [-0.35, -0.6, 0.72], l = Math.hypot(...v); retu
 const HALF = (() => { const v = [LIGHT[0], LIGHT[1], LIGHT[2] + 1], l = Math.hypot(...v); return v.map((x) => x / l); })();
 const FOCAL = 1.6; // metres from the camera to the middle of the money
 
-function blurSprite(w, h, pad, draw) {
-  const c = document.createElement("canvas");
-  c.width = w + pad * 2; c.height = h + pad * 2;
-  const x = c.getContext("2d");
-  x.filter = `blur(${pad / 2}px)`;
-  x.fillStyle = "#000";
-  draw(x, pad);
-  return c;
-}
-const billShadow = blurSprite(200, 85, 24, (x, p) => x.fillRect(p, p, 200, 85));
-const coinShadow = blurSprite(100, 100, 12, (x, p) => { x.beginPath(); x.arc(p + 50, p + 50, 50, 0, Math.PI * 2); x.fill(); });
-
 // Maps the unit square (-0.5..0.5) onto the piece as it is seen on screen:
 // an orthographic view of its 3D frame, scaled by a little perspective.
 function basis(p, w, h, k, flip) {
@@ -159,51 +142,40 @@ function drawPiece(p) {
   const back = n[2] < 0; // looking at the other face: un-mirror it
   const f = back ? n.map((x) => -x) : n; // normal of the face we see
   const diffuse = Math.max(0, f[0] * LIGHT[0] + f[1] * LIGHT[1] + f[2] * LIGHT[2]);
-  const w = d.bill ? BILL.w : d.d * COIN_DRAW;
-  const h = d.bill ? BILL.h : d.d * COIN_DRAW;
+  if (!d.sprite) return; // logo still loading
+  const w = d.d * COIN_DRAW;
+  const h = w * ICON_ASPECT;
   const [ax, ay, bx, by] = basis(p, w, h, k, back);
+  const at = (x, y) => ctx.setTransform(DPR * ax, DPR * ay, DPR * bx, DPR * by, DPR * x, DPR * y);
 
   // Soft shadow on the white backdrop, further away for pieces nearer the camera.
   const off = (10 + 40 * (1 - k)) * grow;
-  ctx.setTransform(DPR * ax, DPR * ay, DPR * bx, DPR * by, DPR * (cx + off * 0.5), DPR * (cy + off));
+  at(cx + off * 0.5, cy + off);
   ctx.globalAlpha = 0.09;
-  const sp = d.bill ? billShadow : coinShadow;
-  const padX = d.bill ? 24 / 200 : 12 / 100, padY = d.bill ? 24 / 85 : 12 / 100;
-  ctx.drawImage(sp, -0.5 - padX, -0.5 - padY, 1 + 2 * padX, 1 + 2 * padY);
+  const [padX, padY] = d.shadowPad;
+  ctx.drawImage(d.shadow, -0.5 - padX, -0.5 - padY, 1 + 2 * padX, 1 + 2 * padY);
+
+  // The coin's edge: stack thin slices along the normal, darkened when seen edge-on.
+  const t = COIN_THICK * COIN_DRAW * pxPerM * k * grow;
+  const ox = f[0] * t, oy = f[1] * t;
+  const edgeDark = 0.45 * (1 - Math.abs(f[2]));
+  for (let i = 0; i < 4; i++) {
+    const s = i / 3 - 1;
+    at(cx + ox * s, cy + oy * s);
+    ctx.globalAlpha = 1;
+    ctx.drawImage(d.edge, -0.5, -0.5, 1, 1);
+    if (edgeDark > 0.01) { ctx.globalAlpha = edgeDark; ctx.drawImage(d.dark, -0.5, -0.5, 1, 1); }
+  }
+
+  // Face, then diffuse shading and a specular glint, each through the logo's own shape.
+  at(cx, cy);
   ctx.globalAlpha = 1;
-
-  if (!d.bill) {
-    // The coin's edge: stack thin slices along the normal, then the face on top.
-    const t = COIN_THICK * COIN_DRAW * pxPerM * k * grow;
-    const ox = f[0] * t, oy = f[1] * t;
-    const [r, g, b] = d.rim;
-    const lit = 0.55 + 0.45 * Math.abs(f[2]);
-    for (let i = 0; i < 4; i++) {
-      const s = i / 3 - 1;
-      ctx.setTransform(DPR * ax, DPR * ay, DPR * bx, DPR * by, DPR * (cx + ox * s), DPR * (cy + oy * s));
-      ctx.fillStyle = `rgb(${r * lit | 0},${g * lit | 0},${b * lit | 0})`;
-      hexPath(ctx, 0.5); ctx.fill();
-    }
-  }
-
-  ctx.setTransform(DPR * ax, DPR * ay, DPR * bx, DPR * by, DPR * cx, DPR * cy);
-  ctx.save();
-  if (d.bill) {
-    ctx.beginPath(); ctx.rect(-0.5, -0.5, 1, 1); ctx.clip();
-    ctx.drawImage(d.sprite, -0.5, -0.5, 1, 1);
-  } else {
-    hexPath(ctx, 0.5); ctx.clip();
-    ctx.drawImage(d.sprite, -0.5, -0.5, 1, 1);
-  }
-  // Diffuse light, plus a specular glint on metal.
-  const dark = (1 - (0.45 + 0.55 * diffuse)) * (d.bill ? 0.55 : 0.7) + (back && d.bill ? 0.06 : 0);
-  ctx.fillStyle = `rgba(0,0,0,${dark})`;
-  ctx.fillRect(-0.5, -0.5, 1, 1);
-  if (!d.bill) {
-    const spec = Math.pow(Math.max(0, f[0] * HALF[0] + f[1] * HALF[1] + f[2] * HALF[2]), 30);
-    if (spec > 0.02) { ctx.fillStyle = `rgba(255,255,255,${spec * 0.75})`; ctx.fillRect(-0.5, -0.5, 1, 1); }
-  }
-  ctx.restore();
+  ctx.drawImage(d.sprite, -0.5, -0.5, 1, 1);
+  const dark = (1 - (0.45 + 0.55 * diffuse)) * 0.45;
+  if (dark > 0.01) { ctx.globalAlpha = dark; ctx.drawImage(d.dark, -0.5, -0.5, 1, 1); }
+  const spec = Math.pow(Math.max(0, f[0] * HALF[0] + f[1] * HALF[1] + f[2] * HALF[2]), 30);
+  if (spec > 0.02) { ctx.globalAlpha = spec * 0.75; ctx.drawImage(d.white, -0.5, -0.5, 1, 1); }
+  ctx.globalAlpha = 1;
 }
 
 /* ---------- sound ---------- */
@@ -337,7 +309,7 @@ function frame(now) {
 requestAnimationFrame(frame);
 
 /* ---------- sales ---------- */
-const fmt = (robux) => `R$${Math.round(robux).toLocaleString()}`;
+const fmt = (robux) => Math.round(robux).toLocaleString();
 // The creator's share after Roblox's 30% cut, same as SalesHook's "earned".
 const CREATOR_SHARE = 0.7;
 // DevEx rate, only for sales that arrive without their Robux price.
