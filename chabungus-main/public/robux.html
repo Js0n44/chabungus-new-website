@@ -46,13 +46,11 @@ resize();
 // Physical sizes and masses. Coins are drawn a bit bigger than life so they read on screen.
 const COIN_DRAW = 1.6, COIN_THICK = 0.0016;
 const BILL = { w: 0.156, h: 0.0663, mass: 0.001, rotDamp: 7 };
-// Hexagonal Robux coins: bigger and brighter for bigger values. Physics treats them as discs.
-const DENOMS = [
-  { robux: 100, d: 0.044, mass: 0.008, face: ["#ffe58a", "#e0a81c", "#9c6a08"], rim: [176, 122, 18] },
-  { robux: 10,  d: 0.034, mass: 0.005, face: ["#f6d877", "#cf9a1e", "#8f620c"], rim: [160, 112, 20] },
-  { robux: 1,   d: 0.026, mass: 0.0025, face: ["#e9cf86", "#b98a2a", "#7d5712"], rim: [140, 100, 28] },
-];
-const MAX_PER_SALE = 150, MAX_ON_SCREEN = 300;
+// One hexagonal coin is one Robux. Physics treats it as a disc.
+const COIN = { d: 0.03, mass: 0.004, face: ["#f9dc7c", "#d9a21f", "#946409"], rim: [168, 118, 20] };
+const MAX_ON_SCREEN = 450;
+// Coins per second while a sale pours out; big sales rain for longer instead of all at once.
+const MIN_RATE = 60, MAX_RATE = 180;
 
 // Unit hexagon (pointy top) with slightly rounded corners, centred on 0,0.
 function hexPath(x, r, round = 0.12) {
@@ -88,19 +86,10 @@ function coinSprite([light, mid, dark]) {
   hexPath(x, S * 0.5); x.lineWidth = 6; x.strokeStyle = "rgba(255,255,255,0.35)"; x.stroke();
   return c;
 }
-for (const d of DENOMS) d.sprite = coinSprite(d.face);
-
-function breakdown(robux) {
-  let left = Math.max(1, Math.round(robux));
-  const out = [];
-  for (const d of DENOMS) {
-    while (left >= d.robux && out.length < MAX_PER_SALE) { out.push(d); left -= d.robux; }
-  }
-  return out;
-}
+COIN.sprite = coinSprite(COIN.face);
 
 const pieces = [];
-const queue = [];
+let pending = 0, releaseCarry = 0, jingleCount = 0, nextJingle = 0;
 const rnd = (a, b) => a + Math.random() * (b - a);
 
 function spawn(d) {
@@ -114,16 +103,25 @@ function spawn(d) {
 }
 
 function drop(robux) {
-  const list = breakdown(robux);
-  // Release over a moment, like a handful being thrown, so a big sale reads as a downpour.
-  const spread = Math.min(2500, 250 + list.length * 35);
-  const now = performance.now();
-  for (const d of list) queue.push({ d, at: now + Math.random() * spread });
-  queue.sort((a, b) => a.at - b.at);
-  const coins = list.filter((d) => !d.bill).length, bills = list.length - coins;
+  pending += Math.max(1, Math.round(robux));
   chaChing();
-  if (coins) setTimeout(() => coinJingle(coins), 150);
-  if (bills) setTimeout(() => paperRustle(W / 2, Math.min(1, 0.4 + bills * 0.05), true), 60);
+}
+
+// Pours pending coins out at a steady rate; the coin sound follows the flow.
+function release(dt, now) {
+  if (pending <= 0) return;
+  const rate = Math.max(MIN_RATE, Math.min(MAX_RATE, pending / 1.5));
+  releaseCarry += rate * dt;
+  const n = Math.min(pending, Math.floor(releaseCarry));
+  releaseCarry -= n;
+  pending -= n;
+  for (let i = 0; i < n; i++) spawn(COIN);
+  jingleCount += n;
+  if (jingleCount > 0 && now >= nextJingle) {
+    coinJingle(Math.min(12, jingleCount));
+    jingleCount = 0;
+    nextJingle = now + 320;
+  }
 }
 
 /* ---------- drawing ---------- */
@@ -312,7 +310,7 @@ const SUB = 1 / 600;
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000) * TIME_SCALE;
   last = now;
-  while (queue.length && queue[0].at <= now) spawn(queue.shift().d);
+  release(dt, now);
 
   const steps = Math.ceil(dt / SUB);
   for (const p of pieces) for (let i = 0; i < steps; i++) step(p.body, dt / steps);
