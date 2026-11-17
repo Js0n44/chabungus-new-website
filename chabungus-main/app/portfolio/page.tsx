@@ -8,7 +8,7 @@ const SHOW_ONLY_ALL = false;
 export type GameEntry = {
     id: number;
     type: "developed" | "invested";
-    ownership: number;
+    ownership?: number;
 };
 
 const PORTFOLIO_GAMES: GameEntry[] = [
@@ -28,7 +28,10 @@ const PORTFOLIO_GAMES: GameEntry[] = [
     { id: 117081969138178, type: "developed", ownership: 100 },
 
     // Play Dead or OOF
-    { id: 91235001078797, type: "developed", ownership: 100 }
+    { id: 91235001078797, type: "developed", ownership: 100 },
+
+    // Folk Valley Hide and Seek
+    { id: 106179034420754, type: "developed" }
 ];
 
 const MIN_CCU_THRESHOLD = 4;
