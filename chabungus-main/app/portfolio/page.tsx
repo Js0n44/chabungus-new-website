@@ -31,7 +31,10 @@ const PORTFOLIO_GAMES: GameEntry[] = [
     { id: 91235001078797, type: "developed", ownership: 100 },
 
     // Folk Valley Hide and Seek
-    { id: 106179034420754, type: "developed" }
+    { id: 106179034420754, type: "developed" },
+
+    // Mech Evolution
+    { id: 139818128153637, type: "developed" }
 ];
 
 const MIN_CCU_THRESHOLD = 4;
