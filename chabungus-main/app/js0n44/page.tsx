@@ -182,8 +182,7 @@ export default async function FounderPage() {
               </summary>
               <div className="border-t border-white/10 px-5 py-4">
                 <p className="text-sm leading-relaxed text-zinc-400">
-                  None. &quot;Social&quot; media is putrid filth. Short-form content is food for the weak.
-                </p>
+                  None</p>
               </div>
             </details>
           </div>
